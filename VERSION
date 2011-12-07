@@ -1,0 +1,9 @@
+This starter package zip was published on Tue Nov 29 05:52:20 UTC 2011.
+
+Last change on this starter package was:
+commit 7c50c5e4d7dfb8bb93558f38b808f839e6708c28
+Date:   Thu Nov 17 11:27:42 2011 -0800
+
+    Fix HILL_ANT string
+
+Check https://github.com/aichallenge/aichallenge/tree/epsilon/ants/dist/starter_bots/python for new versions.
