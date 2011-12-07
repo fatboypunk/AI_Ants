@@ -136,50 +136,6 @@ class Ants():
                             owner = int(tokens[3])
                             self.hill_list[(row, col)] = owner
                             
-                            
-#    def A_Star(self, start, goal):
-#        closedset = []  # The set of nodes already evaluated.
-#        openset = []
-#        openset.append(start)# The set of tentative nodes to be evaluated, initially containing the start node
-#        came_from = {} # The map of navigated nodes.
-#        tentative_g_score = 0
-#        g_score = {}
-#        h_score = {}
-#        f_score = {}
-#        g_score[start] = 0    # Cost from start along best known path.
-#        h_score[start] = self.heuristic_cost_estimate(start, goal)
-#        f_score[start] = g_score[start] + h_score[start]
-#        udie = start
-#        while (len(openset) > 0):
-#            lowest = 10000
-#            x = udie
-#            i = self.find(x,openset)
-#            if x == goal:
-#                
-#                return self.reconstruct_path(came_from,came_from[goal])
-#            
-#            del openset[i]
-#            closedset.append(x)
-#            for y in self.neigbor_nodes(x):
-#                if y in closedset:
-#                    continue
-#                if y not in openset:
-#                    openset.append(y)
-#                    tentative_is_better = True
-#                elif tentative_g_score < g_score[y]:
-#                    tentative_is_better = True
-#                else:
-#                    tentative_is_better = False
-# 
-#                if tentative_is_better == True:
-#                    came_from[y] = x
-#                    g_score[y] = tentative_g_score
-#                    h_score[y] = self.heuristic_cost_estimate(y, goal)
-#                    f_score[y] = g_score[y] + h_score[y]
-#                if lowest > g_score[y] + h_score[y]:
-#                    udie = y
-#        return False
-    
     def find(self,f, seq):
         i = 0
         for item in seq:
@@ -213,8 +169,6 @@ class Ants():
             else:
                 return [current_node]
     
-    
-        
         
     def heuristic_cost_estimate(self, start, goal):
         minusI = start[0]-goal[0]
@@ -225,61 +179,40 @@ class Ants():
 
         return minusIj + minusIi;
 
-#    def neigbor_nodes(self,x):
-#        nodes= []
-#        for direction in ('s','e','w','n'):
-#            if self.passable(self.destination(x, direction)):
-#                if self.no_dead_end_neigbor(self.destination(x, direction),x):
-#                    nodes.append(self.destination(x, direction))
-#        return nodes
-#    
-#    def no_dead_end_neigbor(self, x, back):
-#        i=0
-#        for direction in ('s','e','w','n'):
-#            if self.passable(self.destination(x, direction)) and self.destination != back:
-#                i+=1
-#        if i >1:
-#            return True
-#        else:
-#            return False
 
     def A_Star(self,start,goal):
         DebugOutput=0
-        closedset={} #the empty set - set of nodes already evaluated.
+        closedset={} 
         openset={}
-        openset[start]=None #set containing the initial node    // The set of tentative nodes to be evaluated.
-        came_from={} #the empty map // The map of navigated nodes.
+        openset[start]=None 
+        came_from={} 
     
         g_score={}
-        g_score[start]=0 #// Cost from start along best known path.
+        g_score[start]=0 
         h_score={}
         h_score[start]=self.heuristic_cost_estimate(start,goal)
         f_score={}
-        f_score[start] = h_score[start] #// Estimated total cost from start to goal through y.
+        f_score[start] = h_score[start] 
      
-        while len(openset.keys())>0:#while openset is not empty
+        while len(openset.keys())>0:
             x=openset.keys()[0]
             for xi in openset.keys():
                 if f_score[xi]<f_score[x]:
                     x=xi
             del openset[x]
-            #(x,value)=openset.popitem()#the node in openset having the lowest f_score[] value
-            
             if x == goal:
                 return self.reconstruct_path(came_from,came_from[goal])
             
-            #remove x from openset//already done with popitem()
-            closedset[x]=None #add x to closedset
-        
-            for y in self.neigbor_nodes(x): #foreach y in neighbor_nodes(x)
+            closedset[x]=None 
+            for y in self.neigbor_nodes(x): 
                 if DebugOutput==1:
                     print y
-                if y in closedset.keys():#if y in closedset
+                if y in closedset.keys():
                     continue
-                tentative_g_score=g_score[x]+self.dist_between(x,y)#tentative_g_score := g_score[x] + dist_between(x,y)
+                tentative_g_score=g_score[x]+self.dist_between(x,y)
     
-                if y not in openset.keys():#if y not in openset
-                    openset[y]=None#add y to openset
+                if y not in openset.keys():
+                    openset[y]=None
                     tentative_is_better = True
                 elif tentative_g_score < g_score[y]:
                     tentative_is_better = True
@@ -290,56 +223,12 @@ class Ants():
                     g_score[y] = tentative_g_score
                     h_score[y] = self.heuristic_cost_estimate(y, goal)
                     f_score[y] = g_score[y] + h_score[y]
-        
-
         return False
- 
-#    def reconstruct_path(self, came_from, current_node):
-#        next_node=current_node
-#        path=[]
-#        
-#        while 1:
-#            if next_node in came_from.keys():
-#                path.append(next_node)
-#                next_node=came_from[next_node]
-#            else:
-#                path.append(next_node)
-#                break
-#        return path
+
         
-    #    if current_node in came_from.keys():
-    #        p = reconstruct_path(came_from, came_from[current_node])
-    #        asNode=[]
-    #        asNode.append(current_node)
-    #        return (p + asNode)
-    #    else:
-    #        asNode=[]
-    #        asNode.append(current_node)
-    #        return asNode
 
     def dist_between(self,nodeA,nodeB):
         return self.heuristic_cost_estimate(nodeA,nodeB)
-#    
-#    def heuristic_cost_estimate(self, nodeA,nodeB):
-#        n=100
-#        rowA=(nodeA[1]/n)+nodeA[1]%n
-#        colA=nodeA[0]%n+n
-#   
-#
-#        rowB=(nodeB[0]/n)+nodeB[0]%n
-#        colB=nodeB[1]%n+n
-#        return abs(rowB-rowA)+abs(colB-colA)
-#  
-    #    print "rowA=",rowA
-    #    print "colA=",colA
-    #    
-    #    print "rowB=",rowB
-    #    print "colB=",colB
-    #    
-    #    print "rowB-rowA=",rowB-rowA
-    #    print "colB-colA=",colB-colA
-        
-#        return abs(rowB-rowA)+abs(colB-colA)
 
     def time_remaining(self):
         return self.turntime - int(1000 * (time.time() - self.turn_start_time))

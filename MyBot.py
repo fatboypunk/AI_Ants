@@ -61,11 +61,11 @@ class MyBot:
                 move_to = ants.A_Star(ant_loc,food_loc)
                 if(move_to!=False):
                     for move_loc in move_to:
-                        if(move_loc!=False):
+                        if(move_loc not in orders):
                             if do_move_location(ant_loc, move_loc):
                                 break
                 
-        # attack hills
+#        # attack hills
 #        for hill_loc, hill_owner in ants.enemy_hills():
 #            if hill_loc not in self.hills:
 #                self.hills.append(hill_loc)        
@@ -77,7 +77,12 @@ class MyBot:
 #                    ant_dist.append((dist, ant_loc, hill_loc))
 #        ant_dist.sort()
 #        for dist, ant_loc, hill_loc in ant_dist:
-#            do_move_location(ant_loc, hill_loc)
+#            move_to = ants.A_Star(ant_loc,food_loc)
+#            if(move_to!=False):
+#                for move_loc in move_to:
+#                    if(move_loc not in orders):
+#                        if do_move_location(ant_loc, move_loc):
+#                            break
                 
 #        # explore unseen areas
         for loc in self.unseen[:]:
@@ -95,7 +100,7 @@ class MyBot:
                         move_to = ants.A_Star(ant_loc,unseen_loc)
                         if(move_to!=False):
                             for move_loc in move_to:
-                                if(move_loc!=False and move_loc != ant_loc):
+                                if(move_loc not in orders):
                                     if do_move_location(ant_loc, move_loc):
                                         break
         
